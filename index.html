@@ -1009,19 +1009,41 @@ function saveApplication() {
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function (e) {
-                    const imageData = e.target.result;
-                    const html5QrCode = new Html5Qrcode("qr-reader");
-                    html5QrCode.decodeFromImage(imageData)
-                        .then((decodedText) => {
-                            const data = JSON.parse(decodedText);
-                            fillApplicationForm(data); // عرض البيانات المستخرجة
-                        })
-                        .catch((err) => {
-                            alert("تعذر قراءة الباركود من الصورة: " + err.message);
-                        });
+                    const image = new Image();
+                    image.src = e.target.result;
+                    image.onload = function () {
+                        const canvas = document.createElement("canvas");
+                        const context = canvas.getContext("2d");
+                        canvas.width = image.width;
+                        canvas.height = image.height;
+                        context.drawImage(image, 0, 0);
+                        const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+                        const qrCodeResult = jsQR(imageData.data, canvas.width, canvas.height);
+                        if (qrCodeResult) {
+                            try {
+                                const data = JSON.parse(qrCodeResult.data);
+                                fillApplicationForm(data); // Display the extracted data
+                                showModal('تم قراءة الباركود بنجاح');
+                            } catch (error) {
+                                showModal('الباركود غير صالح: ' + error.message);
+                            }
+                        } else {
+                            showModal('تعذر قراءة الباركود من الصورة. يرجى التأكد من وضوح الصورة.');
+                        }
+                    };
                 };
                 reader.readAsDataURL(file);
             }
+        }
+
+        // Your existing functions
+
+        // Function to show modal with a message
+        function showModal(message) {
+            const modal = document.getElementById('modal');
+            const modalContent = document.getElementById('modalContent');
+            modalContent.innerHTML = `<p>${message}</p>`;
+            modal.style.display = 'flex';
         }
         
         function readQRWithJsQR(event) {
