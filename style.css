@@ -1,5 +1,4 @@
-
-        :root {
+:root {
             --primary-color: #FFD700;
             --secondary-color: #1a1a1a;
             --accent-color: #FF4136;
@@ -1193,4 +1192,3 @@ img {
     50% { transform: scale(1.2); }
     100% { transform: scale(1); }
 }
-
