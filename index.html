@@ -1,35 +1,581 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html dir="rtl" lang="ar">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>واجهة تفاعلية حديثة</title>
-    <!-- ربط ملف CSS -->
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="تطبيق تاكسي العراق - خدمة حجز سيارات الأجرة الأفضل في العراق">
+    <meta name="keywords" content="تاكسي العراق, سيارات أجرة, حجز تاكسي, نقل, مواصلات">
+    <meta name="author" content="تاكسي العراق">
+    <meta name="theme-color" content="#FFD700">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <title>تاكسي العراق - خدمة حجز السيارات الأولى في العراق</title>
+    
+    <!-- App Icons -->
+    <link rel="icon" type="image/png" href="https://firebasestorage.googleapis.com/v0/b/messageemeapp.appspot.com/o/driver-images%2F7605a607-6cf8-4b32-aee1-fa7558c98452.png?alt=media&token=5cf9e67c-ba6e-4431-a6a0-79dede15b527">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://firebasestorage.googleapis.com/v0/b/messageemeapp.appspot.com/o/driver-images%2F7605a607-6cf8-4b32-aee1-fa7558c98452.png?alt=media&token=5cf9e67c-ba6e-4431-a6a0-79dede15b527">
+    <link rel="apple-touch-startup-image" href="https://firebasestorage.googleapis.com/v0/b/messageemeapp.appspot.com/o/driver-images%2F7605a607-6cf8-4b32-aee1-fa7558c98452.png?alt=media&token=5cf9e67c-ba6e-4431-a6a0-79dede15b527">
+    
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- External CSS Libraries -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css">
+    
+    <!-- App CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="تاكسي العراق">
+    <meta property="og:description" content="خدمة حجز سيارات الأجرة الأفضل في العراق">
+    <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/messageemeapp.appspot.com/o/driver-images%2F7605a607-6cf8-4b32-aee1-fa7558c98452.png?alt=media&token=5cf9e67c-ba6e-4431-a6a0-79dede15b527">
+    <meta property="og:url" content="https://taxi-iraq.com">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="تاكسي العراق">
+    <meta name="twitter:description" content="خدمة حجز سيارات الأجرة الأفضل في العراق">
+    <meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/messageemeapp.appspot.com/o/driver-images%2F7605a607-6cf8-4b32-aee1-fa7558c98452.png?alt=media&token=5cf9e67c-ba6e-4431-a6a0-79dede15b527">
+    
+    <!-- Scripts -->
+    <script src="https://unpkg.com/react/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone/babel.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    
+    <!-- App Scripts -->
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
 </head>
 <body>
-    <header>
-        <h1>مرحبًا بك في واجهتنا التفاعلية</h1>
-        <p>اكتشف الميزات التفاعلية هنا</p>
-    </header>
-    <main>
-        <section class="cards">
-            <div class="card">
-                <h2>البطاقة الأولى</h2>
-                <p>هذه بطاقة تفاعلية.</p>
-                <button onclick="showAlert('البطاقة الأولى')">تفاعل</button>
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-dark app-header fixed-top">
+        <div class="container">
+            <a class="app-logo navbar-brand" href="#">
+                <i class="fas fa-taxi"></i>
+                تاكسي العراق
+            </a>
+            <nav class="navbar app-header fixed-top">
+                <div class="container d-flex justify-content-between align-items-center">
+                    <!-- اللوجو واسم التطبيق مع أيقونة البحث -->
+                    <div class="d-flex align-items-center app-title">
+                        <a class="app-logo d-flex align-items-center" href="#">
+                            <i class="fas fa-taxi me-2"></i>
+                            <span>ataxiPash</span>
+                        </a>
+                        <!-- أيقونة البحث بجانب الاسم -->
+                        <a class="search-icon ms-3" href="#" data-bs-toggle="modal" data-bs-target="#searchModal">
+                            <i class="fas fa-search"></i>
+                        </a>
+                    <
+            
+                    <!-- الأدوات الأخرى (التنبيهات، حسابي) -->
+                    <div class="tools d-flex align-items-center">
+                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#notificationsModal">
+                            <i class="fas fa-bell"></i>
+                        </a>
+                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#profileModal">
+                            <i class="fas fa-user"></i>
+                        </a>
+                    </div>
+                </div>
+            </nav>
+            
+                        </a>
+                    </div>
+                </div>
+            </nav>
+            
+                        </a>
+                    </li>
+                </ul>
             </div>
-            <div class="card">
-                <h2>البطاقة الثانية</h2>
-                <p>هذه بطاقة أخرى.</p>
-                <button onclick="showAlert('البطاقة الثانية')">تفاعل</button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Map View -->
+        <div id="map"></div>
+
+        <!-- Location Filter -->
+        <div class="location-filter">
+            <div class="location-chips" id="locationFilter">
+                <span class="location-chip active" data-location="all">
+                    <i class="fas fa-globe"></i>
+                    الكل
+                </span>
+                <span class="location-chip" data-location="بغداد">
+                    <i class="fas fa-map-marker-alt"></i>
+                    بغداد
+                </span>
+                <span class="location-chip" data-location="الكرخ">
+                    <i class="fas fa-map-marker-alt"></i>
+                    الكرخ
+                </span>
+                <span class="location-chip" data-location="الرصافة">
+                    <i class="fas fa-map-marker-alt"></i>
+                    الرصافة
+                </span>
+                <span class="location-chip" data-location="البصرة">
+                    <i class="fas fa-map-marker-alt"></i>
+                    البصرة
+                </span>
+                <span class="location-chip" data-location="نينوى">
+                    <i class="fas fa-map-marker-alt"></i>
+                    نينوى
+                </span>
+                <span class="location-chip" data-location="الموصل">
+                    <i class="fas fa-map-marker-alt"></i>
+                    الموصل
+                </span>
+                <span class="location-chip" data-location="النجف">
+                    <i class="fas fa-map-marker-alt"></i>
+                    النجف
+                </span>
+                <span class="location-chip" data-location="الكوفة">
+                    <i class="fas fa-map-marker-alt"></i>
+                    الكوفة
+                </span>
+                <span class="location-chip" data-location="كربلاء">
+                    <i class="fas fa-map-marker-alt"></i>
+                    كربلاء
+                </span>
+                <span class="location-chip" data-location="الحسينية">
+                    <i class="fas fa-map-marker-alt"></i>
+                    الحسينية
+                </span>
+                <span class="location-chip" data-location="أربيل">
+                    <i class="fas fa-map-marker-alt"></i>
+                    أربيل
+                </span>
+                <span class="location-chip" data-location="كركوك">
+                    <i class="fas fa-map-marker-alt"></i>
+                    كركوك
+                </span>
+                <span class="location-chip" data-location="الأنبار">
+                    <i class="fas fa-map-marker-alt"></i>
+                    الأنبار
+                </span>
+                <span class="location-chip" data-location="الرمادي">
+                    <i class="fas fa-map-marker-alt"></i>
+                    الرمادي
+                </span>
+                <span class="location-chip" data-location="الفلوجة">
+                    <i class="fas fa-map-marker-alt"></i>
+                    الفلوجة
+                </span>
+                <span class="location-chip" data-location="بابل">
+                    <i class="fas fa-map-marker-alt"></i>
+                    بابل
+                </span>
+                <span class="location-chip" data-location="الحلة">
+                    <i class="fas fa-map-marker-alt"></i>
+                    الحلة
+                </span>
+                <span class="location-chip" data-location="المسيب">
+                    <i class="fas fa-map-marker-alt"></i>
+                    المسيب
+                </span>
+                <span class="location-chip" data-location="الهاشمية">
+                    <i class="fas fa-map-marker-alt"></i>
+                    الهاشمية
+                </span>
+                <span class="location-chip" data-location="القاسم">
+                    <i class="fas fa-map-marker-alt"></i>
+                    القاسم
+                </span>
+                <span class="location-chip" data-location="ديالى">
+                    <i class="fas fa-map-marker-alt"></i>
+                    ديالى
+                </span>
+                <span class="location-chip" data-location="بعقوبة">
+                    <i class="fas fa-map-marker-alt"></i>
+                    بعقوبة
+                </span>
+                <span class="location-chip" data-location="ذي قار">
+                    <i class="fas fa-map-marker-alt"></i>
+                    ذي قار
+                </span>
+                <span class="location-chip" data-location="الناصرية">
+                    <i class="fas fa-map-marker-alt"></i>
+                    الناصرية
+                </span>
+                <span class="location-chip" data-location="السليمانية">
+                    <i class="fas fa-map-marker-alt"></i>
+                    السليمانية
+                </span>
+                <span class="location-chip" data-location="صلاح الدين">
+                    <i class="fas fa-map-marker-alt"></i>
+                    صلاح الدين
+                </span>
+                <span class="location-chip" data-location="تكريت">
+                    <i class="fas fa-map-marker-alt"></i>
+                    تكريت
+                </span>
+                <span class="location-chip" data-location="واسط">
+                    <i class="fas fa-map-marker-alt"></i>
+                    واسط
+                </span>
+                <span class="location-chip" data-location="الكوت">
+                    <i class="fas fa-map-marker-alt"></i>
+                    الكوت
+                </span>
+                <span class="location-chip" data-location="ميسان">
+                    <i class="fas fa-map-marker-alt"></i>
+                    ميسان
+                </span>
+                <span class="location-chip" data-location="العمارة">
+                    <i class="fas fa-map-marker-alt"></i>
+                    العمارة
+                </span>
+                <span class="location-chip" data-location="المثنى">
+                    <i class="fas fa-map-marker-alt"></i>
+                    المثنى
+                </span>
+                <span class="location-chip" data-location="السماوة">
+                    <i class="fas fa-map-marker-alt"></i>
+                    السماوة
+                </span>
+                <span class="location-chip" data-location="دهوك">
+                    <i class="fas fa-map-marker-alt"></i>
+                    دهوك
+                </span>
+                <span class="location-chip" data-location="القادسية">
+                    <i class="fas fa-map-marker-alt"></i>
+                    القادسية
+                </span>
+                <span class="location-chip" data-location="الديوانية">
+                    <i class="fas fa-map-marker-alt"></i>
+                    الديوانية
+                </span>
+                
             </div>
-        </section>
+            
+        </div>
+
+        <!-- Drivers Grid -->
+        <div class="drivers-grid" id="driversGrid"></div>
+    </div>
+
+    <!-- Add Driver Button -->
+    <button class="floating-action-btn" onclick="showAddDriverModal()">
+        <i class="fas fa-plus"></i>
+    </button>
+
+  <!-- Add Driver Modal -->
+    <div class="modal fade" id="addDriverModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">إضافة سائق جديد</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    
+                    <form id="addDriverForm" onsubmit="handleAddDriver(event)">
+                        <div class="mb-4 text-center">
+                            <div class="image-upload-container" onclick="document.getElementById('driverImage').click()">
+                                <input type="file" id="driverImage" accept="image/*" style="display: none" onchange="handleImagePreview(event)">
+                                <img id="imagePreview" src="#" alt="" style="display: none; width: 100%; height: 100%; object-fit: cover;">
+                                <div class="upload-placeholder">
+                                    <i class="fas fa-camera fa-2x mb-2"></i>
+                                    <p>انقر لإضافة صورة</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label">رابط موقع السائق</label>
+                            <input type="url" class="form-control" id="driverMapLink" placeholder="أدخل رابط الموقع (Google Maps)">
+                        </div>
+                        
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">اسم السائق</label>
+                                <input type="text" class="form-control" id="driverName" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">رقم الهاتف</label>
+                                <input type="tel" class="form-control" id="driverPhone" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">نوع السيارة</label>
+                                <input type="text" class="form-control" id="carType" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">موديل السيارة</label>
+                                <input type="number" class="form-control" id="carModel" required>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label">المنطقة</label>
+                                <select class="form-control" id="driverLocation" required>
+                                    <option value="">اختر المحافظة</option>
+<option value="بغداد">بغداد</option>
+<option value="الكرخ">الكرخ</option>
+<option value="الرصافة">الرصافة</option>
+<option value="البصرة">البصرة</option>
+<option value="نينوى">نينوى</option>
+<option value="الموصل">الموصل</option>
+<option value="النجف">النجف</option>
+<option value="الكوفة">الكوفة</option>
+<option value="كربلاء">كربلاء</option>
+<option value="الحسينية">الحسينية</option>
+<option value="أربيل">أربيل</option>
+<option value="كركوك">كركوك</option>
+<option value="الأنبار">الأنبار</option>
+<option value="الرمادي">الرمادي</option>
+<option value="الفلوجة">الفلوجة</option>
+<option value="بابل">بابل</option>
+<option value="الحلة">الحلة</option>
+<option value="المسيب">المسيب</option>
+<option value="الهاشمية">الهاشمية</option>
+<option value="القاسم">القاسم</option>
+<option value="ديالى">ديالى</option>
+<option value="بعقوبة">بعقوبة</option>
+<option value="ذي قار">ذي قار</option>
+<option value="الناصرية">الناصرية</option>
+<option value="السليمانية">السليمانية</option>
+<option value="صلاح الدين">صلاح الدين</option>
+<option value="تكريت">تكريت</option>
+<option value="واسط">واسط</option>
+<option value="الكوت">الكوت</option>
+<option value="ميسان">ميسان</option>
+<option value="العمارة">العمارة</option>
+<option value="المثنى">المثنى</option>
+<option value="السماوة">السماوة</option>
+<option value="دهوك">دهوك</option>
+<option value="القادسية">القادسية</option>
+<option value="الديوانية">الديوانية</option>
+                               
+                               
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">معلومات إضافية</label>
+                                <textarea class="form-control" id="driverBio" rows="3"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-primary w-100">إضافة السائق</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Loading Spinner -->
+    <div class="loading-spinner" id="loadingSpinner">
+        <div class="spinner"></div>
+    </div>
+    <!-- نافذة تعديل بيانات السائق -->
+<div class="modal fade" id="editDriverModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">تعديل بيانات السائق</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editDriverForm" onsubmit="handleEditDriver(event)">
+                    <input type="hidden" id="editDriverId">
+                    
+                    <div class="mb-4 text-center">
+                        <div class="image-upload-container" onclick="document.getElementById('editDriverImage').click()">
+                            <input type="file" id="editDriverImage" accept="image/*" style="display: none" onchange="handleEditImagePreview(event)">
+                            <img id="editImagePreview" src="#" alt="" style="display: none; width: 100%; height: 200px; object-fit: cover; border-radius: 10px;">
+                            <div class="upload-placeholder">
+                                <i class="fas fa-camera fa-2x mb-2"></i>
+                                <p>انقر لتغيير الصورة</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">اسم السائق</label>
+                            <input type="text" class="form-control" id="editDriverName" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">رقم الهاتف</label>
+                            <input type="tel" class="form-control" id="editDriverPhone" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">نوع السيارة</label>
+                            <input type="text" class="form-control" id="editCarType" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">موديل السيارة</label>
+                            <input type="number" class="form-control" id="editCarModel" required>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label">المنطقة</label>
+                            <select class="form-control" id="editDriverLocation" required>
+                                <option value="">اختر المحافظة</option>
+<option value="بغداد">بغداد</option>
+<option value="الكرخ">الكرخ</option>
+<option value="الرصافة">الرصافة</option>
+<option value="البصرة">البصرة</option>
+<option value="نينوى">نينوى</option>
+<option value="الموصل">الموصل</option>
+<option value="النجف">النجف</option>
+<option value="الكوفة">الكوفة</option>
+<option value="كربلاء">كربلاء</option>
+<option value="الحسينية">الحسينية</option>
+<option value="أربيل">أربيل</option>
+<option value="كركوك">كركوك</option>
+<option value="الأنبار">الأنبار</option>
+<option value="الرمادي">الرمادي</option>
+<option value="الفلوجة">الفلوجة</option>
+<option value="بابل">بابل</option>
+<option value="الحلة">الحلة</option>
+<option value="المسيب">المسيب</option>
+<option value="الهاشمية">الهاشمية</option>
+<option value="القاسم">القاسم</option>
+<option value="ديالى">ديالى</option>
+<option value="بعقوبة">بعقوبة</option>
+<option value="ذي قار">ذي قار</option>
+<option value="الناصرية">الناصرية</option>
+<option value="السليمانية">السليمانية</option>
+<option value="صلاح الدين">صلاح الدين</option>
+<option value="تكريت">تكريت</option>
+<option value="واسط">واسط</option>
+<option value="الكوت">الكوت</option>
+<option value="ميسان">ميسان</option>
+<option value="العمارة">العمارة</option>
+<option value="المثنى">المثنى</option>
+<option value="السماوة">السماوة</option>
+<option value="دهوك">دهوك</option>
+<option value="القادسية">القادسية</option>
+<option value="الديوانية">الديوانية</option>
+                                <!-- إضافة باقي المدن -->
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">معلومات إضافية</label>
+                            <textarea class="form-control" id="editDriverBio" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary w-100">حفظ التغييرات</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="searchModalLabel">بحث عن سائق</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="search-wrapper">
+                    <!-- حقل البحث -->
+                    <div class="search-input-wrapper mb-3">
+                        <div class="input-group">
+                            <input type="text" 
+                                   class="form-control search-input" 
+                                   id="navbarSearchInput" 
+                                   placeholder="ابحث عن اسم السائق، المنطقة، نوع السيارة..."
+                                   autofocus>
+                            <span class="input-group-text">
+                                <i class="fas fa-search"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- خيارات البحث -->
+                    <div class="search-options mb-3">
+                        <div class="btn-group w-100" role="group">
+                            <input type="radio" class="btn-check" name="searchType" id="searchAll" checked>
+                            <label class="btn btn-outline-primary" for="searchAll">الكل</label>
+
+                            <input type="radio" class="btn-check" name="searchType" id="searchName">
+                            <label class="btn btn-outline-primary" for="searchName">الاسم</label>
+
+                            <input type="radio" class="btn-check" name="searchType" id="searchLocation">
+                            <label class="btn btn-outline-primary" for="searchLocation">المنطقة</label>
+
+                            <input type="radio" class="btn-check" name="searchType" id="searchCar">
+                            <label class="btn btn-outline-primary" for="searchCar">السيارة</label>
+                        </div>
+                    </div>
+
+                    <!-- نتائج البحث -->
+                    <div id="searchResults" class="search-results"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- نافذة المحادثة -->
+<div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content chat-window">
+            <!-- رأس النافذة مع صورة واسم السائق -->
+            <div class="modal-header chat-header">
+                <img id="driverImage" src="default-avatar.png" alt="صورة السائق" 
+                     class="rounded-circle me-2" style="width: 60px; height: 60px;">
+                <div>
+                    <h5 class="modal-title" id="driverName">اسم السائق</h5>
+                    <small id="driverCardInfo" style="color: #ddd;">بطاقة السائق</small>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+            </div>
+            <!-- اختيار المشوار -->
+            <div class="modal-body chat-body">
+                <div id="tripSelection" class="mb-3">
+                    <label class="form-label">عدد المشاوير:</label>
+                    <input type="number" id="tripCount" class="form-control mb-2" placeholder="أدخل عدد المشاوير" min="1">
+                    
+                    <label class="form-label">الوجهة:</label>
+                    <input type="text" id="tripDestination" class="form-control mb-2" placeholder="أدخل الوجهة">
+                    
+                    <label class="form-label">نوع الرحلة:</label>
+                    <select id="tripType" class="form-control mb-3">
+                        <option value="ذهاب">ذهاب</option>
+                        <option value="ذهاب وعودة">ذهاب وعودة</option>
+                    </select>
+                    
+                    <button class="btn btn-success w-100" onclick="confirmTrip()">تأكيد المشوار</button>
+                </div>
+                <!-- منطقة الرسائل -->
+                <div id="chatMessages" class="chat-messages d-none"></div>
+            </div>
+            <!-- شريط الإدخال -->
+            <div class="modal-footer chat-footer d-none">
+                <div class="input-group">
+                    <input type="text" id="chatInput" class="form-control chat-input" placeholder="اكتب رسالتك هنا...">
+                    <button class="btn btn-primary send-btn" onclick="sendMessage()">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    </script>
     </main>
-    <footer>
-        <p>© 2024 جميع الحقوق محفوظة</p>
-    </footer>
-    <!-- ربط ملف JavaScript -->
-    <script src="script.js"></script>
+    <!-- ربط ملف الجافا سكريبت -->
+    <script src="js/app.js"></script>
 </body>
 </html>
