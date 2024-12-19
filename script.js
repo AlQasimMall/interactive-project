@@ -1560,3 +1560,81 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loadDrivers(); // استدعاء التحميل الأولي للسائقين.
 });
+
+
+// التأكد من تحميل DOM
+document.addEventListener('DOMContentLoaded', function() {
+    // تهيئة التطبيق
+    initializeApp();
+});
+
+// دالة تهيئة التطبيق
+function initializeApp() {
+    // تهيئة الخريطة
+    if (!window.mapInitialized) {
+        window.mapInitialized = true;
+        initMap();
+    }
+
+    // إعداد مستمعي الأحداث
+    setupEventListeners();
+
+    // تحميل السائقين
+    loadDrivers();
+
+    // تهيئة البحث
+    setupSearch();
+}
+
+// دالة إعداد مستمعي الأحداث
+function setupEventListeners() {
+    // مستمعي أحداث تصفية المواقع
+    const locationChips = document.querySelectorAll('.location-chip');
+    locationChips.forEach((chip) => {
+        chip.addEventListener('click', () => {
+            locationChips.forEach((c) => c.classList.remove('active'));
+            chip.classList.add('active');
+            const location = chip.dataset.location;
+            loadDrivers(location);
+        });
+    });
+
+    // مستمع حدث زر إضافة سائق
+    const addDriverBtn = document.querySelector('.floating-action-btn');
+    if (addDriverBtn) {
+        addDriverBtn.addEventListener('click', showAddDriverModal);
+    }
+
+    // مستمعي أحداث النماذج
+    setupFormListeners();
+}
+
+// دالة إعداد البحث
+function setupSearch() {
+    const searchInput = document.getElementById('navbarSearchInput');
+    if (searchInput) {
+        let searchTimeout;
+        searchInput.addEventListener('input', (e) => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                const searchType = document.querySelector('input[name="searchType"]:checked').id.replace('search', '').toLowerCase();
+                searchDrivers(e.target.value, searchType);
+            }, 300);
+        });
+    }
+}
+
+// دالة إعداد مستمعي النماذج
+function setupFormListeners() {
+    // نموذج إضافة سائق
+    const addDriverForm = document.getElementById('addDriverForm');
+    if (addDriverForm) {
+        addDriverForm.addEventListener('submit', handleAddDriver);
+    }
+
+    // نموذج تعديل سائق
+    const editDriverForm = document.getElementById('editDriverForm');
+    if (editDriverForm) {
+        editDriverForm.addEventListener('submit', handleEditDriver);
+    }
+}
